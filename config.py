@@ -32,7 +32,7 @@ HEROKU_API_KEY = getenv("HEROKU_API_KEY")
 
 UPSTREAM_REPO = getenv(
     "UPSTREAM_REPO",
-    "https://github.com/TEAMRIYA/RiyaMusic",
+    "https://github.com/spambotscoder/RiyaMusic",
 )
 UPSTREAM_BRANCH = getenv("UPSTREAM_BRANCH", "master")
 GIT_TOKEN = getenv(
@@ -43,8 +43,8 @@ GIT_TOKEN = getenv(
 API_KEY = getenv("API_KEY", "")
 API_BASE_URL = getenv("API_BASE_URL", "http://riyabots.site")
 
-SUPPORT_CHANNEL = getenv("SUPPORT_CHANNEL", "https://t.me/RiyaUpdates")
-SUPPORT_CHAT = getenv("SUPPORT_CHAT", "https://t.me/Riya_chat_Support")
+SUPPORT_CHANNEL = getenv("SUPPORT_CHANNEL", "https://t.me/shona_bots")
+SUPPORT_CHAT = getenv("SUPPORT_CHAT", "https://t.me/+KmFdLCHYD00wNTVk")
 
 # Set this to True if you want the assistant to automatically leave chats after an interval
 AUTO_LEAVING_ASSISTANT = bool(getenv("AUTO_LEAVING_ASSISTANT", False))
@@ -82,10 +82,10 @@ confirmer = {}
 
 
 START_IMG_URL = getenv(
-    "START_IMG_URL", "https://files.catbox.moe/w304gc.jpg"
+    "START_IMG_URL", "https://files.catbox.moe/3lvnqm.jpg"
 )
 PING_IMG_URL = getenv(
-    "PING_IMG_URL", "https://files.catbox.moe/bdcf5x.jpg"
+    "PING_IMG_URL", "https://files.catbox.moe/0e8myk.jpg"
 )
 PLAYLIST_IMG_URL = "https://files.catbox.moe/dqp0ai.jpg"
 STATS_IMG_URL = "https://files.catbox.moe/42umbv.jpg"
