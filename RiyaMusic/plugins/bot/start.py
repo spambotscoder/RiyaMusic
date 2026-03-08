@@ -1,10 +1,18 @@
+#
+# Copyright (C) 2021-2022 by TheAloneteam@Github, < https://github.com/TheAloneTeam >.
+# This file is part of < https://github.com/TheAloneTeam/AloneMusic > project,
+# and is released under the "GNU v3.0 License Agreement".
+# Please see < https://github.com/TheAloneTeam/AloneMusic/blob/master/LICENSE >
+#
+# All rights reserved.
+
 import time
-import asyncio  # asyncio ko import karna na bhulein
+import random
 from pyrogram import filters
-from pyrogram.errors import ChannelInvalid
-from pyrogram.enums import ChatType, ChatMembersFilter
+from pyrogram.enums import ChatType
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 from youtubesearchpython.__future__ import VideosSearch
+
 import config
 from RiyaMusic import app
 from RiyaMusic.misc import _boot_
@@ -16,7 +24,6 @@ from RiyaMusic.utils.database import (
     get_lang,
     is_banned_user,
     is_on_off,
-    connect_to_chat,
 )
 from RiyaMusic.utils.decorators.language import LanguageStart
 from RiyaMusic.utils.formatters import get_readable_time
@@ -24,39 +31,29 @@ from RiyaMusic.utils.inline import help_pannel, private_panel, start_panel
 from config import BANNED_USERS
 from strings import get_string
 
+EFFECT_ID = [
+5046509860389126442,
+5107584321108051014,
+5104841245755180586,
+5159385139981059251,
+]
+
+
 @app.on_message(filters.command(["start"]) & filters.private & ~BANNED_USERS)
 @LanguageStart
 async def start_pm(client, message: Message, _):
     await add_served_user(message.from_user.id)
+    await message.react("🥰", "🔥", "💖", "😁", "😎", "🌚", "❤️‍🔥", "♥️", "🎉", "🙈" )
     if len(message.text.split()) > 1:
         name = message.text.split(None, 1)[1]
-
-        if name[0:3] == "del":
-            await del_plist_msg(client=client, message=message, _=_)
-
         if name[0:4] == "help":
             keyboard = help_pannel(_)
             return await message.reply_photo(
                 photo=config.START_IMG_URL,
+                has_spoiler=True,
                 caption=_["help_1"].format(config.SUPPORT_CHAT),
                 reply_markup=keyboard,
             )
-        if name[:8] == "connect_":
-            chat_id = name[8:]
-            try:
-                title = (await app.get_chat(chat_id)).title
-            except ChannelInvalid:
-                return await message.reply_text(f"ʟᴏᴏʟ ʟɪᴋᴇ ɪ ᴀᴍ ɴᴏᴛ ᴀɴ ᴀᴅᴍɪɴ ᴏғ ᴛʜᴇ ᴄʜᴀᴛ ɪᴅ {chat_id}")
-            
-            admin_ids = [member.user.id async for member in app.get_chat_members(chat_id, filter=ChatMembersFilter.ADMINISTRATORS)]
-            if message.from_user.id not in admin_ids:
-                return await message.reply_text(f"sᴏʀʀʏ sɪʀ ʙᴜᴛ ɪ ᴛʜɪɴᴋ ᴛʜᴀᴛ ʏᴏᴜ ɴᴏᴛ ᴀɴ ᴀᴅᴍɪɴ ᴏғ {title}")
-            a = await connect_to_chat(message.from_user.id, chat_id)
-            if a:
-                await message.reply_text(f"ʏᴏᴜ ᴀʀᴇ ɴᴏᴡ ᴄᴏɴɴᴇᴄᴛᴇᴅ ᴛᴏ {title}")
-            else:
-                await message.reply_text(a)
-        
         if name[0:3] == "sud":
             await sudoers_list(client=client, message=message, _=_)
             if await is_on_off(2):
@@ -94,6 +91,7 @@ async def start_pm(client, message: Message, _):
             await app.send_photo(
                 chat_id=message.chat.id,
                 photo=thumbnail,
+                has_spoiler=True,
                 caption=searched_text,
                 reply_markup=key,
             )
@@ -106,6 +104,8 @@ async def start_pm(client, message: Message, _):
         out = private_panel(_)
         await message.reply_photo(
             photo=config.START_IMG_URL,
+            has_spoiler=True,
+            message_effect_id=random.choice(EFFECT_ID),
             caption=_["start_2"].format(message.from_user.mention, app.mention),
             reply_markup=InlineKeyboardMarkup(out),
         )
@@ -115,11 +115,6 @@ async def start_pm(client, message: Message, _):
                 text=f"{message.from_user.mention} ᴊᴜsᴛ sᴛᴀʀᴛᴇᴅ ᴛʜᴇ ʙᴏᴛ.\n\n<b>ᴜsᴇʀ ɪᴅ :</b> <code>{message.from_user.id}</code>\n<b>ᴜsᴇʀɴᴀᴍᴇ :</b> @{message.from_user.username}",
             )
 
-# Rest of the code remains the same...
-
-
-
-
 
 @app.on_message(filters.command(["start"]) & filters.group & ~BANNED_USERS)
 @LanguageStart
@@ -128,6 +123,7 @@ async def start_gp(client, message: Message, _):
     uptime = int(time.time() - _boot_)
     await message.reply_photo(
         photo=config.START_IMG_URL,
+        has_spoiler=True,
         caption=_["start_1"].format(app.mention, get_readable_time(uptime)),
         reply_markup=InlineKeyboardMarkup(out),
     )
@@ -162,7 +158,8 @@ async def welcome(client, message: Message):
 
                 out = start_panel(_)
                 await message.reply_photo(
-                    config.START_IMG_URL,
+                    photo=config.START_IMG_URL,
+                    has_spoiler=True,
                     caption=_["start_3"].format(
                         message.from_user.first_name,
                         app.mention,
@@ -175,3 +172,5 @@ async def welcome(client, message: Message):
                 await message.stop_propagation()
         except Exception as ex:
             print(ex)
+
+
