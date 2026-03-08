@@ -1,7 +1,7 @@
 from pyrogram.types import InlineKeyboardButton
 
 import config
-from SONALI import app
+from RiyaMusic import app
 
 
 def start_panel(_):
