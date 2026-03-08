@@ -13,9 +13,9 @@ from typing import Union
 import yt_dlp
 from pyrogram.enums import MessageEntityType
 from pyrogram.types import Message
-from Riyamusic.utils.formatters import time_to_seconds
+from RiyaMusic.utils.formatters import time_to_seconds
 import aiohttp
-from Riyamusic import LOGGER
+from RiyaMusic import LOGGER
 
 try:
     from py_yt import VideosSearch
